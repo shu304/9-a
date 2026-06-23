@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>習慣アプリ</title>
+</head>
+<body>
+
+<h1>習慣管理アプリ</h1>
+
+<h2>習慣追加</h2>
+<input id="name" placeholder="習慣名">
+<input id="desc" placeholder="説明">
+<button onclick="addHabit()">追加</button>
+
+<h2>習慣一覧</h2>
+<button onclick="loadHabits()">取得</button>
+<ul id="list"></ul>
+
+<h2>記録追加</h2>
+<input id="habit_id" placeholder="habit_id">
+<input id="date" placeholder="2026-06-16">
+<select id="done">
+  <option value="true">やった</option>
+  <option value="false">やってない</option>
+</select>
+<button onclick="addLog()">記録</button>
+
+<script>
+async function addHabit() {
+  await fetch('/api/habits', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      name: document.getElementById('name').value,
+      description: document.getElementById('desc').value
+    })
+  });
+  alert('追加完了');
+}
+
+async function loadHabits() {
+  const res = await fetch('/api/habits');
+  const data = await res.json();
+
+  const list = document.getElementById('list');
+  list.innerHTML = '';
+
+  data.forEach(h => {
+    const li = document.createElement('li');
+    li.textContent = `${h.id}: ${h.name} (${h.description})`;
+    list.appendChild(li);
+  });
+}
+
+async function addLog() {
+  await fetch('/api/logs', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      habit_id: Number(document.getElementById('habit_id').value),
+      date: document.getElementById('date').value,
+      done: document.getElementById('done').value === "true"
+    })
+  });
+  alert('記録完了');
+}
+</script>
+
+</body>
+</html>
