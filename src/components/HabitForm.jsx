@@ -1,7 +1,7 @@
 function HabitForm() {
 
   const handleAdd = () => {
-    console.log("追加ボタン押された");
+    console.log("追加ボタン押された！");
   };
 
   return (
@@ -11,6 +11,7 @@ function HabitForm() {
       <input type="text" placeholder="習慣名" />
       <input type="text" placeholder="説明" />
 
+      {/* ここ重要 */}
       <button onClick={handleAdd}>追加</button>
     </div>
   );
