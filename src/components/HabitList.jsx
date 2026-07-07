@@ -1,11 +1,11 @@
 function HabitList() {
 
   const handleGet = () => {
-    console.log("取得ボタンが押された");
+    console.log("📋 取得ボタン押された");
   };
 
   const handleRecord = () => {
-    console.log("記録ボタンが押された");
+    console.log("📝 記録ボタン押された");
   };
 
   return (
@@ -18,7 +18,7 @@ function HabitList() {
 
       <input type="text" placeholder="habit_id" />
       <input type="date" />
-      
+
       <select>
         <option>やった</option>
         <option>やってない</option>
