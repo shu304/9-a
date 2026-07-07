@@ -5,7 +5,7 @@ const app = express();
 app.use(express.json());
 app.use(express.static('public'));
 
-const PORT = 3000;
+const PORT = 3001;
 
 /* =====================
    API

@@ -1,6 +1,10 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import App from "./App";
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<App />);
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>習慣管理アプリ</title>
+</head>
+<body>
+  <div id="root"></div>
+</body>
+</html>
