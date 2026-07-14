@@ -3,12 +3,18 @@ function HabitItem({ habit, onDelete, onToggle }) {
     <li style={{ marginBottom: "8px" }}>
       <input
         type="checkbox"
-        checked={habit.done}
-        onChange={() => onToggle(habit.id, habit.done)}
+        checked={habit.done || false}
+        onChange={() => onToggle(habit.id)}
       />
-      <span style={{ textDecoration: habit.done ? "line-through" : "none" }}>
+
+      <span
+        style={{
+          textDecoration: habit.done ? "line-through" : "none",
+        }}
+      >
         {habit.name}・{habit.description}
       </span>
+
       <button
         onClick={() => onDelete(habit.id)}
         style={{ marginLeft: "10px" }}
