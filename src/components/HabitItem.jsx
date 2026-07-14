@@ -1,23 +1,19 @@
 function HabitItem({ habit, onDelete, onToggle }) {
   return (
-    <li>
+    <li style={{ marginBottom: "8px" }}>
       <input
         type="checkbox"
-        checked={habit.done || false}
-        onChange={() => onToggle(habit.id)}
+        checked={habit.done}
+        onChange={() => onToggle(habit.id, habit.done)}
       />
-
-      <span
-        style={{
-          textDecoration: habit.done ? "line-through" : "none",
-          marginRight: "10px",
-        }}
-      >
-        {habit.name} - {habit.description}
+      <span style={{ textDecoration: habit.done ? "line-through" : "none" }}>
+        {habit.name}・{habit.description}
       </span>
-
-      <button onClick={() => onDelete(habit.id)}>
-        削除
+      <button
+        onClick={() => onDelete(habit.id)}
+        style={{ marginLeft: "10px" }}
+      >
+        取り消し
       </button>
     </li>
   );

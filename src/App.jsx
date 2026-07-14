@@ -37,12 +37,13 @@ function App() {
     fetchHabits();
   };
 
-  const toggleHabit = (id) => {
-    setHabits((prev) =>
-      prev.map((h) =>
-        h.id === id ? { ...h, done: !h.done } : h
-      )
-    );
+  const toggleHabit = async (id, done) => {
+  await fetch(`/api/habits/${id}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ done: !done }),
+  });
+  fetchHabits();
   };
 
   return (
