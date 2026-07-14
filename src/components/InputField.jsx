@@ -1,9 +1,10 @@
-function InputField(props) {
+function InputField({ placeholder, value, onChange }) {
   return (
-    <div>
-      <label>{props.label}</label>
-      <input type="text" />
-    </div>
+    <input
+      placeholder={placeholder}
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+    />
   );
 }
 

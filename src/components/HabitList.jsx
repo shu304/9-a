@@ -1,30 +1,19 @@
-function HabitList() {
+import HabitItem from "./HabitItem";
 
-  const handleGet = () => {
-    console.log("📋 取得ボタン押された");
-  };
-
-  const handleRecord = () => {
-    console.log("📝 記録ボタン押された");
-  };
-
+function HabitList({ habits, onDelete, onToggle }) {
   return (
     <div>
       <h2>習慣一覧</h2>
-
-      <button onClick={handleGet}>取得</button>
-
-      <h2>記録追加</h2>
-
-      <input type="text" placeholder="habit_id" />
-      <input type="date" />
-
-      <select>
-        <option>やった</option>
-        <option>やってない</option>
-      </select>
-
-      <button onClick={handleRecord}>記録</button>
+      <ul>
+        {habits.map((h) => (
+          <HabitItem
+            key={h.id}
+            habit={h}
+            onDelete={onDelete}
+            onToggle={onToggle}
+          />
+        ))}
+      </ul>
     </div>
   );
 }

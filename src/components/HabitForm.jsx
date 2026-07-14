@@ -1,18 +1,24 @@
-function HabitForm() {
+import InputField from "./InputField";
+import Button from "./Button";
 
-  const handleAdd = () => {
-    console.log("追加ボタン押された！");
-  };
-
+function HabitForm({ name, desc, setName, setDesc, onAdd }) {
   return (
     <div>
       <h2>習慣追加</h2>
 
-      <input type="text" placeholder="習慣名" />
-      <input type="text" placeholder="説明" />
+      <InputField
+        placeholder="習慣名"
+        value={name}
+        onChange={setName}
+      />
 
-      {/* ここ重要 */}
-      <button onClick={handleAdd}>追加</button>
+      <InputField
+        placeholder="説明"
+        value={desc}
+        onChange={setDesc}
+      />
+
+      <Button onClick={onAdd}>追加</Button>
     </div>
   );
 }

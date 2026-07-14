@@ -1,10 +1,53 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>習慣管理アプリ</title>
 </head>
 <body>
-  <div id="root"></div>
+
+<h1>習慣管理アプリ</h1>
+
+<h2>習慣追加</h2>
+<input id="name" placeholder="習慣名">
+<input id="desc" placeholder="説明">
+<button onclick="addHabit()">追加</button>
+
+<h2>習慣一覧</h2>
+<ul id="list"></ul>
+
+<script>
+async function fetchHabits() {
+  const res = await fetch('/api/habits');
+  const data = await res.json();
+
+  const list = document.getElementById('list');
+  list.innerHTML = "";
+
+  data.forEach(h => {
+    const li = document.createElement('li');
+    li.textContent = h.name + " - " + h.description;
+    list.appendChild(li);
+  });
+}
+
+async function addHabit() {
+  const name = document.getElementById('name').value;
+  const desc = document.getElementById('desc').value;
+
+  await fetch('/api/habits', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ name, description: desc })
+  });
+
+  fetchHabits();
+}
+
+fetchHabits();
+</script>
+
 </body>
 </html>
