@@ -1,11 +1,12 @@
 const express = require('express');
-const pool = require('./db');
-
+const cors = require('cors');
+const pool = require('./db'); // ← PostgreSQL接続設定
 const app = express();
+const PORT = 3000;
+
+app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
-
-const PORT = 3000;
 
 /* =====================
    API
@@ -27,11 +28,11 @@ app.post('/api/habits', async (req, res) => {
   const { name, description } = req.body;
 
   try {
-    await pool.query(
-      'INSERT INTO habits (name, description) VALUES ($1, $2)',
+    const result = await pool.query(
+      'INSERT INTO habits (name, description) VALUES ($1, $2) RETURNING *',
       [name, description]
     );
-    res.json({ message: 'habit created' });
+    res.json(result.rows[0]); // ← 追加した行を返す
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'DB error' });
@@ -43,11 +44,11 @@ app.post('/api/logs', async (req, res) => {
   const { habit_id, date, done } = req.body;
 
   try {
-    await pool.query(
-      'INSERT INTO logs (habit_id, date, done) VALUES ($1, $2, $3)',
+    const result = await pool.query(
+      'INSERT INTO logs (habit_id, date, done) VALUES ($1, $2, $3) RETURNING *',
       [habit_id, date, done]
     );
-    res.json({ message: 'log created' });
+    res.json(result.rows[0]); // ← 追加した行を返す
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'DB error' });

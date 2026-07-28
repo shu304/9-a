@@ -1,68 +1,55 @@
-import { useEffect, useState } from "react";
-import Header from "./components/Header";
-import HabitForm from "./components/HabitForm";
-import HabitList from "./components/HabitList";
+import { useState, useEffect } from "react";
 
 function App() {
-  const [habits, setHabits] = useState([]);
+  const [habits, setHabits] = useState([]); // DBから取得した習慣一覧
   const [name, setName] = useState("");
-  const [desc, setDesc] = useState("");
+  const [description, setDescription] = useState("");
 
-  const fetchHabits = async () => {
-    const res = await fetch("/api/habits");
-    const data = await res.json();
-    setHabits(data);
-  };
-
+  // 初回表示で DB から取得
   useEffect(() => {
-    fetchHabits();
+    fetch("api/habits") // ← proxy 経由（先頭に / なし）
+      .then((res) => res.json())
+      .then((data) => setHabits(data))
+      .catch((err) => console.error("Fetch error:", err));
   }, []);
 
+  // 新しい習慣を追加
   const addHabit = async () => {
-    if (!name) return;
-
-    await fetch("/api/habits", {
+    if (!name.trim()) return;
+    const res = await fetch("api/habits", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, description: desc }),
+      body: JSON.stringify({ name, description }),
     });
-
+    const newHabit = await res.json();
+    setHabits((prev) => [...prev, newHabit]);
     setName("");
-    setDesc("");
-    fetchHabits();
-  };
-
-  const deleteHabit = async (id) => {
-    await fetch(`/api/habits/${id}`, { method: "DELETE" });
-    fetchHabits();
-  };
-
-  const toggleHabit = async (id, done) => {
-  await fetch(`/api/habits/${id}`, {
-    method: "PATCH",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ done: !done }),
-  });
-  fetchHabits();
+    setDescription("");
   };
 
   return (
     <div style={{ padding: "20px" }}>
-      <Header />
+      <h1>習慣リスト</h1>
+      <ul>
+        {habits.map((h) => (
+          <li key={h.id}>
+            <b>{h.name}</b>：{h.description}
+          </li>
+        ))}
+      </ul>
 
-      <HabitForm
-        name={name}
-        desc={desc}
-        setName={setName}
-        setDesc={setDesc}
-        onAdd={addHabit}
+      <h2>新しい習慣を追加</h2>
+      <input
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        placeholder="習慣名"
       />
-
-      <HabitList
-        habits={habits}
-        onDelete={deleteHabit}
-        onToggle={toggleHabit}
+      <input
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+        placeholder="説明"
       />
+      <button onClick={addHabit}>追加</button>
     </div>
   );
 }
